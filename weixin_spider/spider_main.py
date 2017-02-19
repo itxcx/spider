@@ -25,20 +25,20 @@ class SpiderMain(object):
                 urls = self.parse.url_parse(urls_cont)
                 self.urls.add_new_urls(urls)
             while self.urls.has_new_url():
-                #try:
-                new_url = self.urls.get_new_url()
-                print 'craw %d : %s' % (count, new_url,)
-                html_cont = self.downloader.downloader(new_url)
-                new_data = self.parse.article_parse(html_cont)
-                if new_data is None: continue
-                self.outputer.collect_data(new_data, index + 1)
-                count = count + 1
-                sleep = int(random.random() * 8)
-                print 'sleep in %s' % sleep
-                time.sleep(sleep)
-                #except Exception, e:
-                #    print Exception, ":", e
-                #    print 'craw failed'
+                try:
+                    new_url = self.urls.get_new_url()
+                    print 'craw %d : %s' % (count, new_url,)
+                    html_cont = self.downloader.downloader(new_url)
+                    new_data = self.parse.article_parse(html_cont)
+                    if new_data is None: continue
+                    self.outputer.collect_data(new_data, index + 1)
+                    count = count + 1
+                    sleep = int(random.random() * 8)
+                    print 'sleep in %s' % sleep
+                    time.sleep(sleep)
+                except Exception, e:
+                    print Exception, ":", e
+                    print 'craw failed'
             print 'category ' + str(index) + ' finish'
 
 
