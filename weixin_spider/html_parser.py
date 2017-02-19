@@ -11,9 +11,9 @@ import html_outputer
 
 
 class HtmlParser(object):
-    def __init__(self,database_connect):
+    def __init__(self):
         self.downloader = html_downloader.HtmlDownloader()
-        self.outputer = html_outputer.HtmlOutputer(database_connect)
+        self.outputer = html_outputer.HtmlOutputer()
 
     def _get_new_urls(self, soup):
         new_urls = set()
@@ -29,6 +29,7 @@ class HtmlParser(object):
         soup = BeautifulSoup(html_cont, 'html.parser', from_encoding='utf-8')
         title_node = soup.find('h2', class_='rich_media_title', id="activity-name")
         res_data['title'] = title_node.get_text().strip()
+        print res_data['title']
         if self.outputer.is_new_data(res_data['title']):
             return None
         imgs = soup.find('div', class_='rich_media_content', id="js_content").find_all('img')

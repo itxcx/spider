@@ -1,14 +1,14 @@
 # coding:utf8
-
-
+import MySQLdb
 
 
 class HtmlOutputer(object):
-    def __init__(self, database_connect):
-        self.db = database_connect
+    def __init__(self):
+        self.db = None
 
     def collect_data(self, data, cid):
         if data:
+            self.db = MySQLdb.connect(host="localhost", user="root", passwd="root", db="hstba", charset="utf8")
             cursor = self.db.cursor()
             try:
                 # 执行sql语句
@@ -27,19 +27,20 @@ class HtmlOutputer(object):
             except:
                 # Rollback in case there is any error
                 self.db.rollback()
+            finally:
+                self.db.close()
 
     def is_new_data(self, title):
+        self.db = MySQLdb.connect(host="localhost", user="root", passwd="root", db="hstba", charset="utf8")
         title = str(title)
         cursor = self.db.cursor()
         # 执行SQL语句
         cursor.execute("select count(`id`) from `hstba`.`wp_posts` where `post_title`=%s", (title,))
         # 获取所有记录列表
         results = cursor.fetchone()
-        if int(results[0]) > 0:
+        results = results[0]
+        self.db.close()
+        if int(results) > 0:
             print 'Data already exists!'
             return True
         return False
-
-    def close_db(self):
-        # 关闭数据库连接
-        self.db.close()

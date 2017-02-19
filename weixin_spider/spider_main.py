@@ -2,18 +2,16 @@
 import random
 import time
 
-import MySQLdb
-
 import url_manager, html_downloader, html_parser, html_outputer
 
 
 class SpiderMain(object):
     def __init__(self):
-        db = MySQLdb.connect(host="localhost", user="root", passwd="root", db="hstba", charset="utf8")
+        self.db = None
         self.urls = url_manager.UrlManager()
         self.downloader = html_downloader.HtmlDownloader()
-        self.parse = html_parser.HtmlParser(db)
-        self.outputer = html_outputer.HtmlOutputer(db)
+        self.parse = html_parser.HtmlParser()
+        self.outputer = html_outputer.HtmlOutputer()
 
 
     def craw(self):
@@ -27,22 +25,21 @@ class SpiderMain(object):
                 urls = self.parse.url_parse(urls_cont)
                 self.urls.add_new_urls(urls)
             while self.urls.has_new_url():
-                try:
-                    new_url = self.urls.get_new_url()
-                    print 'craw %d : %s' % (count, new_url,)
-                    html_cont = self.downloader.downloader(new_url)
-                    new_data = self.parse.article_parse(html_cont)
-                    if new_data is None: continue
-                    self.outputer.collect_data(new_data, index + 1)
-                    count = count + 1
-                    sleep = int(random.random() * 8)
-                    print 'sleep in %s' % sleep
-                    time.sleep(sleep)
-                except Exception, e:
-                    print Exception, ":", e
-                    print 'craw failed'
+                #try:
+                new_url = self.urls.get_new_url()
+                print 'craw %d : %s' % (count, new_url,)
+                html_cont = self.downloader.downloader(new_url)
+                new_data = self.parse.article_parse(html_cont)
+                if new_data is None: continue
+                self.outputer.collect_data(new_data, index + 1)
+                count = count + 1
+                sleep = int(random.random() * 8)
+                print 'sleep in %s' % sleep
+                time.sleep(sleep)
+                #except Exception, e:
+                #    print Exception, ":", e
+                #    print 'craw failed'
             print 'category ' + str(index) + ' finish'
-            self.outputer.close_db()
 
 
 if __name__ == "__main__":
