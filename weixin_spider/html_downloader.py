@@ -1,5 +1,8 @@
 # coding:utf8
 import urllib2
+import oss2
+import requests
+import config
 
 
 class HtmlDownloader(object):
@@ -21,3 +24,11 @@ class HtmlDownloader(object):
             return file_name
         except:
             return None
+
+    def downloader_pic_uposs(self, url, file_name):
+        if url and file_name:
+            auth = oss2.Auth(config.ACCESSKEYID, config.ACCESSKEYSECRET)
+            bucket = oss2.Bucket(auth, '您的Endpoint', '您的Bucket名')
+            input = requests.get(url)
+            bucket.put_object(file_name, input)
+

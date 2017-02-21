@@ -2,22 +2,22 @@
 
 class UrlManager(object):
     def __init__(self):
-        self.new_urls = set()
+        self.new_urls = []
 
     def url_collector(self, index):
-        self.new_urls.clear()
+        self.new_urls = []
         index = str(index)
         return (
             'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/pc_' + index + '.html',
-            'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/1.html',
-            'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/2.html',
-            'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/3.html',
-            'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/4.html',
+            # 'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/1.html',
+            # 'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/2.html',
+            # 'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/3.html',
+            # 'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/4.html',
         )
 
     def add_new_url(self, url):
         if url and url not in self.new_urls:
-            self.new_urls.add(url)
+            self.new_urls.append(url)
 
     def add_new_urls(self, new_urls):
         if new_urls:
