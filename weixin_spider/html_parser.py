@@ -38,8 +38,7 @@ class HtmlParser(object):
         imgs = soup.find('div', class_='rich_media_content', id="js_content").find_all('img')
         for i in imgs:
             file_name = str(uuid.uuid1()) + '.' + i.get('data-type', 'jpg')
-            file_oss_url = '//static.hstba.com/images/' + file_name
-            self.downloader.downloader_pic_uposs(i['data-src'], file_name)
+            file_oss_url = self.downloader.downloader_pic_uposs(i['data-src'], file_name)
             i['src'] = file_oss_url
             del i['data-src']
             del i['data-ratio']

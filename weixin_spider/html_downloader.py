@@ -28,7 +28,7 @@ class HtmlDownloader(object):
     def downloader_pic_uposs(self, url, file_name):
         if url and file_name:
             auth = oss2.Auth(config.ACCESSKEYID, config.ACCESSKEYSECRET)
-            bucket = oss2.Bucket(auth, '您的Endpoint', '您的Bucket名')
+            bucket = oss2.Bucket(auth, config.ENDPOINT, config.BUCKET)
             input = requests.get(url)
-            bucket.put_object(file_name, input)
-
+            result = bucket.put_object('images/' + file_name, input)
+            return '//static.hstba.com/images/' + file_name if result.status == 200 else ''
