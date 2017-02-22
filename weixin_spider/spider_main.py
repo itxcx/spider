@@ -3,6 +3,10 @@ import random
 import time
 import uuid
 
+from PIL import Image
+
+import config
+
 import url_manager, html_downloader, html_parser, html_outputer
 
 
@@ -33,7 +37,7 @@ class SpiderMain(object):
                     if new_data is None: continue
                     thumbnail_uuid = str(
                         uuid.uuid1())
-                    file_name_base = ('wp-content/uploads/%s/%s/' % (
+                    file_name_base = (config.FILESTORAGEPATH % (
                         time.strftime('%Y', time.localtime(time.time())),
                         time.strftime('%m', time.localtime(time.time())),)) + thumbnail_uuid;
                     file_name = file_name_base + '.jpeg'
@@ -42,13 +46,19 @@ class SpiderMain(object):
                     if new_url['src']:
                         src = new_url['src']
                         thumbnail = self.downloader.downloader_pic(src, file_name)
+                        sImg = Image.open(thumbnail)
+                        dImg = sImg.resize((150, 150), Image.ANTIALIAS)  # 设置压缩尺寸和选项，注意尺寸要用括号
+                        dImg.save(file_name_150)
+                        sImg = Image.open(thumbnail)
+                        dImg = sImg.resize((300, 169), Image.ANTIALIAS)  # 设置压缩尺寸和选项，注意尺寸要用括号
+                        dImg.save(file_name_300)
                         if not thumbnail:
                             thumbnail_uuid = None
                     else:
                         thumbnail_uuid = None
                     self.outputer.collect_data(new_data, thumbnail_uuid, index + 1)
                     count = count + 1
-                    sleep = int(random.random() * 8)
+                    sleep = int(random.random() * 5)
                     print 'sleep in %s' % sleep
                     time.sleep(sleep)
                 except Exception, e:
