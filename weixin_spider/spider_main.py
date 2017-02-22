@@ -17,7 +17,7 @@ class SpiderMain(object):
     def craw(self):
         count = 1
         category_total = 20
-        for index in range(category_total):
+        for index in reversed(range(category_total)):
             # 收集本栏目的全部url
             collectors = self.urls.url_collector(index)
             for collector in collectors:

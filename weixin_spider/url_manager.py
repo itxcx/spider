@@ -9,10 +9,10 @@ class UrlManager(object):
         index = str(index)
         return (
             'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/pc_' + index + '.html',
-            # 'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/1.html',
-            # 'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/2.html',
-            # 'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/3.html',
-            # 'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/4.html',
+            'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/1.html',
+            'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/2.html',
+            'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/3.html',
+            'http://weixin.sogou.com/pcindex/pc/pc_' + index + '/4.html',
         )
 
     def add_new_url(self, url):
@@ -30,3 +30,4 @@ class UrlManager(object):
     def get_new_url(self):
         new_url = self.new_urls.pop()
         return new_url
+
