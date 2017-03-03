@@ -17,13 +17,13 @@ class HtmlDownloader(object):
         return response.read()
 
     def downloader_pic(self, url, file_name):
-        try:
-            response = urllib2.urlopen(url, timeout=3)
-            with open(file_name, "wb") as f:
-                f.write(response.read())
-            return file_name
-        except:
-            return None
+        #try:
+        response = urllib2.urlopen(url, timeout=3)
+        with open(file_name, "wb") as f:
+            f.write(response.read())
+        return file_name
+        #except:
+        #    return None
 
     def downloader_pic_uposs(self, url, file_name):
         if url and file_name:

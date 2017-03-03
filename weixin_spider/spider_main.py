@@ -26,8 +26,7 @@ class SpiderMain(object):
                 html_cont = self.downloader.downloader(new_url['href'])
                 new_data = self.parse.article_parse(html_cont)
                 if new_data is None: continue
-                thumbnail_uuid = str(
-                    uuid.uuid1())
+                thumbnail_uuid = str(uuid.uuid1())
                 file_name_base = (config.FILESTORAGEPATH % (
                     time.strftime('%Y', time.localtime(time.time())),
                     time.strftime('%m', time.localtime(time.time())),)) + thumbnail_uuid;
@@ -38,13 +37,16 @@ class SpiderMain(object):
                     src = new_url['src']
                     thumbnail = self.downloader.downloader_pic(src, file_name)
                     sImg = Image.open(thumbnail)
-                    dImg = sImg.resize((150, 150), Image.ANTIALIAS)  # 设置压缩尺寸和选项，注意尺寸要用括号
+                    w, h = sImg.size
+                    print w, h
+                    t_150, t_300 = 150.0 / w, 300.0 / w
+                    print t_150, t_300
+                    print int(h * t_150), int(h * t_300)
+                    dImg = sImg.resize((150, int(h * t_150)), Image.ANTIALIAS)  # 设置压缩尺寸和选项，注意尺寸要用括号
                     dImg.save(file_name_150)
                     sImg = Image.open(thumbnail)
-                    dImg = sImg.resize((300, 169), Image.ANTIALIAS)  # 设置压缩尺寸和选项，注意尺寸要用括号
+                    dImg = sImg.resize((300, int(h * t_300)), Image.ANTIALIAS)  # 设置压缩尺寸和选项，注意尺寸要用括号
                     dImg.save(file_name_300)
-                    if not thumbnail:
-                        thumbnail_uuid = None
                 else:
                     thumbnail_uuid = None
                 self.outputer.collect_data(new_data, thumbnail_uuid, index + 1)
